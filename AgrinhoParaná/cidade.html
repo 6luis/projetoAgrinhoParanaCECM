@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="img/fotocidade.jpg" type="image/png">
   <title>Cidade</title>
   <style>
     * {
@@ -14,45 +15,110 @@
 
     html,
     body {
-      height: 100%;
-      font-family: sans-serif;
-      background-color: #000;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #111;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      min-height: 100vh;
+      color: #eee;
     }
 
     .fundo {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('fotocidade.jpg');
+      width: 100vw;
+      height: 100vh;
+      background-image: url('img/fotocidade.jpg');
       background-size: cover;
       background-position: center;
       z-index: 0;
+      filter: brightness(0.6) contrast(1.2);
+      transition: filter 0.7s ease;
+      pointer-events: none;
+      will-change: filter;
     }
 
-    .titulo {
+    .overlay {
       position: fixed;
-      top: 20%;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(to bottom, rgba(10, 10, 10, 0.85), rgba(0, 0, 0, 0));
+      z-index: 1;
+      pointer-events: none;
+      transition: background 0.7s ease;
+      will-change: background;
+    }
+
+    .header-modern {
+      position: fixed;
+      top: 10%;
       left: 50%;
       transform: translateX(-50%);
-      color: white;
-      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-      font-size: 2.5em;
+      color: #fff;
+      text-align: center;
       z-index: 2;
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      will-change: opacity, transform;
+    }
+
+    .header-modern h1 {
+      font-size: 3em;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .header-modern p {
+      font-size: 1.2em;
+      margin-top: 10px;
+      color: #ccc;
+    }
+
+    .aviso-descer {
+      position: fixed;
+      top: 70%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(20, 20, 20, 0.8);
+      color: #fff;
+      padding: 16px 32px;
+      border-radius: 25px;
+      font-size: 20px;
+      z-index: 3;
+      animation: piscar 1.5s infinite;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
       pointer-events: none;
     }
 
-    .emoji-carro {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      font-size: 60px;
-      cursor: pointer;
-      z-index: 10;
-      animation: tremor 0.3s infinite;
-      text-decoration: none;
+    @keyframes piscar {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
     }
+
+ .emoji-carro {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 60px;
+  cursor: pointer;
+  z-index: 10;
+  animation: tremor 0.3s infinite;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.emoji-carro:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
 
     @keyframes tremor {
       0% {
@@ -80,7 +146,7 @@
       }
     }
 
-    .texto-info {
+       .texto-info {
       position: fixed;
       top: 100px;
       left: 20px;
@@ -93,16 +159,192 @@
       font-size: 15px;
       z-index: 3;
     }
+
+    .conteudo {
+      position: relative;
+      margin-top: 100vh;
+      background: rgba(30, 30, 60, 0.3);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 16px;
+      border: 1px solid rgba(30, 30, 60, 0.4);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 5;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .imagem-dividida {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .cidade-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+
+    .cidade {
+      width: 100%;
+      height: 300px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.4s ease;
+      cursor: default;
+    }
+
+    .cidade:hover {
+      transform: scale(1.05);
+    }
+
+    .descricao {
+      margin-top: 10px;
+      color: #ccc;
+      font-size: 0.9em;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    section {
+      margin-bottom: 40px;
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s ease forwards;
+    }
+
+    section:nth-child(odd) {
+      animation-delay: 0.4s;
+    }
+
+    section:nth-child(even) {
+      animation-delay: 0.6s;
+    }
+
+    h2 {
+      color: #4dabf5;
+      margin-bottom: 12px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    ul li {
+      margin-bottom: 8px;
+    }
+
+    .galeria img {
+      max-width: 200px;
+      margin: 10px;
+      border-radius: 6px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .galeria img:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 
 <body>
-
   <div class="fundo"></div>
-  <div class="titulo">Você está na Cidade</div>
-  <a href="campo.html" class="emoji-carro">🚗</a>
-  <div class="texto-info">Clique no 🚗 para voltar ao campo</div>
+  <div class="overlay"></div>
 
+  <div class="header-modern">
+    <h1>Você está na Cidade</h1>
+    <p>Movimento, cultura e oportunidades te esperam aqui.</p>
+  </div>
+  <a href="campo.html" class="emoji-carro">🚗💨</a>
+  <div class="texto-info">Clique no 🚗 para voltar ao campo</div>
+  <div class="aviso-descer">⬇ Role a página para explorar mais</div>
+
+  <div class="conteudo">
+    <div class="imagem-dividida">
+      <div class="cidade-container">
+        <div class="cidade" style="background-image: url('img/LuaGrande01-2048x1366.jpg');" role="img"
+          aria-label="A fotografia mostra a cidade de Curitiba ao entardecer, com destaque para a lua cheia surgindo no horizonte, parcialmente encoberta por prédios altos. As luzes da cidade começam a se acender, enquanto a silhueta de árvores típicas da região, como as araucárias, se destaca no primeiro plano. Em evidência, uma casa com arquitetura residencial elegante aparece na parte inferior da imagem, contrastando com os edifícios urbanos ao fundo. A cena transmite uma atmosfera tranquila e ao mesmo tempo urbana, com o céu tingido por tons escuros do crepúsculo."></div>
+        <p class="descricao">A fotografia mostra a cidade de Curitiba ao entardecer, com destaque para a lua cheia surgindo no horizonte,
+        parcialmente encoberta por prédios altos. As luzes da cidade começam a se acender, enquanto a silhueta de árvores
+        típicas da região, como as araucárias. Créditos da imagem:<a href="https://www.aen.pr.gov.br/Noticia/Parana-lidera-novo-ranking-nacional-de-inovacao-e-cidades-sustentaveis"
+          target="_blank">
+          https://www.aen.pr.gov.br/Noticia/Parana-lidera-novo-ranking-nacional-de-inovacao-e-cidades-sustentaveis
+        </a>
+        </p>
+      </div>
+      <div class="cidade-container">
+        <div class="cidade" style="background-image: url('img/MG_2209-2048x1365.jpg');" role="img"
+          aria-label=" A Rua Sergipe localizada na cidade de Londrina"></div>
+    <p class="descricao">
+      A Rua Sergipe localizada na cidade de Londrina testa tecnologias de Smart Cities nos setores da segurança pública,
+      mobilidade urbana e conectividade. No
+      local há cinco luminárias inteligentes com câmeras e wi-fi integrados; software de reconhecimento facial; dois
+      cruzamentos semafóricos com sistemas de inteligência artificial integrados e botoeiras com recursos de acessibilidade;
+      seis câmeras de reconhecimento de placas de veículos; e um centro de comando e controle com videowall.
+      Créditos da imagem:
+      <a href="https://www.itaipuparquetec.org.br/rua-sergipe-em-londrina-recebe-tecnologias-desenvolvidas-pelo-pti-br-e-torna-se-referencia-nacional/"
+        target="_blank">
+        https://www.itaipuparquetec.org.br/rua-sergipe-em-londrina-recebe-tecnologias-desenvolvidas-pelo-pti-br-e-torna-se-referencia-nacional/
+      </a>
+    </p>
+
+      </div>
+    </div>
+
+    <section>
+      <h2>Conexões que Transformam</h2>
+      <p>A cidade promove conexões entre pessoas, ideias e oportunidades. Ela transforma sonhos em projetos e projetos
+        em realidade.</p>
+    </section>
+
+    <section>
+      <h2>🏙️ Forças da Cidade</h2>
+      <ul>
+        <li>Inovação tecnológica constante</li>
+        <li>Redes de ensino e cultura</li>
+        <li>Diversidade e multiculturalismo</li>
+        <li>Economia criativa e globalizada</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>🌐 Conectividade Urbana</h2>
+      <ul>
+        <li>Mobilidade inteligente</li>
+        <li>Espaços públicos integradores</li>
+        <li>Cidades sustentáveis e digitais</li>
+        <li>Comunicação em tempo real</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>🤝 Integração com o Campo</h2>
+      <ul>
+        <li>Iniciativas urbanas de agricultura local</li>
+        <li>Parcerias com produtores rurais</li>
+        <li>Feiras, cooperativas e mercados</li>
+        <li>Valorização do consumo consciente</li>
+      </ul>
+    </section>
+  </div>
 </body>
 
 </html>
